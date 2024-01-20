@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: "node-app"
+    working_dir: "/apps"
+    volumes:
+      - ${NODE_APP_PATH}:/apps
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: "npm start"
+    ports:
+      - "3000:3000"
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+    ports:
+      - "6379:6379"
